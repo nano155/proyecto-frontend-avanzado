@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(73, 47, 164) inset !important;
+    -webkit-text-fill-color: #eeefff !important;
+}
+
+.button-remove svg {
+    position: static; /* Asegúrate de que los SVG dentro de .button-remove no se vean afectados */
+    width: 16px;
+    height: 16px;
+    opacity: 1; /* Asegúrate de que el SVG sea visible */
+    z-index: auto;
+  }
+.modifier svg {
+    position: static; /* Asegúrate de que los SVG dentro de .button-remove no se vean afectados */
+    width: 16px;
+    height: 16px;
+    opacity: 1; /* Asegúrate de que el SVG sea visible */
+    z-index: auto;
+  }
