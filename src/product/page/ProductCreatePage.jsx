@@ -146,17 +146,3 @@ export const ProductCreatePage = () => {
     </div>
   );
 };
-
-
-// ?
-// isLoading
-//   ?
-//   <div className="flex flex-col w-full items-center">
-//     <HashLoader
-//       color="#ef01ff"
-//       size={30}
-//     />
-//   </div>
-//   :
-//   <UpdateProduct setViewUpdate={() => setViewUpdate(!viewUpdate)} />
-// : null

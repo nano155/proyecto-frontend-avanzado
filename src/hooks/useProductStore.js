@@ -87,9 +87,7 @@ const deleteProduct = async (pid) =>{
             dispatch(clearMessage());
         }, 10);
   }
-
 }
-
 const selectProduct = async (id) =>{
   dispatch(onLoading())
   try {
@@ -104,25 +102,20 @@ const selectProduct = async (id) =>{
         }, 10);
   }
 }
-
 const startClearSelectedProduct= () =>{
   dispatch(clearSelectedProduct())
 }
-
 const startUpdateProduct = async(id, productUp, thumbnails) =>{
   dispatch(onLoading())
   let dato = null;
   try {
-
     const {data} = await tecnoShopApi.put(`products/${id}`, productUp)
     if(thumbnails.length > 0) {
       const formData = new FormData();
-
       // Asegúrate de que el campo 'thumbnails' coincida con el backend
       thumbnails.forEach((file) => {
           formData.append('thumbnails', file); // Cambiado de 'file' a 'thumbnails'
       });
-
       if(thumbnails.length > 1) {
           dato = await tecnoShopApi.post(`products/uploads/${data.id}`, formData, {
               headers: {
@@ -140,15 +133,12 @@ const startUpdateProduct = async(id, productUp, thumbnails) =>{
     }
     return dispatch(onUpdateProduct(data))
   } catch (error) {
-    console.log(error);
         dispatch(onSendError(error.response.data.error || "--"));
-
         setTimeout(() => {
             dispatch(clearMessage());
         }, 10);
   }
 }
-  
   return {
     startLoadingProducts,
     createProduct,
@@ -161,7 +151,6 @@ const startUpdateProduct = async(id, productUp, thumbnails) =>{
     startUpdateProduct,
     isLoading,
     startClearSelectedProduct
-
   };
       
     }

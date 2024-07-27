@@ -69,7 +69,7 @@ export const Canva = () => {
   }, [])
 
   return (
-    <>
+    <div className="canvas">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
         <defs />
         <linearGradient id="SVGID_1_" x1="2880" x2="2880" y1="909.66" y2="170.6" gradientUnits="userSpaceOnUse">
@@ -112,6 +112,6 @@ export const Canva = () => {
 
         </g>
       </svg>
-    </>
+    </div>
   )
 }

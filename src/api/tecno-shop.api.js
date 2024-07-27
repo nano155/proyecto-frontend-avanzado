@@ -8,6 +8,4 @@ const tecnoShopApi = axios.create({
   withCredentials: true
 });
 
-
-
 export default tecnoShopApi;

@@ -9,6 +9,8 @@ import {
   onLogin,
   onLogout,
 } from "../store/auth/authSlice";
+import { useCartStore } from "./useCartStore";
+import { loadingCart, loadInitialTicket } from "../store/cart/cartSlice";
 
 const getCookie = () => {
   const value = `${document.cookie}`;
@@ -21,6 +23,7 @@ const getCookie = () => {
 export const useAuthStore = () => {
   const dispatch = useDispatch();
   const { status, user, errorMessage, users } = useSelector((state) => state.auth);
+  const {loadCart, loadTickets} = useCartStore()
 
   const startLogin = async ({ email, password }) => {
     dispatch(onChecking());
@@ -28,7 +31,6 @@ export const useAuthStore = () => {
       const {
         data: { userEntity },
       } = await tecnoShopApi.post("/users/login", { email, password });
-
       dispatch(
         onLogin({
           name: `${userEntity.first_name} ${userEntity.last_name}`,
@@ -37,6 +39,8 @@ export const useAuthStore = () => {
           id: userEntity.id,
         })
       );
+      await loadTickets(userEntity.id)
+      await loadCart(userEntity.cart)
     } catch (error) {
       console.log(error);
       dispatch(onLogout("Invalid Credentials"));
@@ -55,14 +59,14 @@ export const useAuthStore = () => {
     password,
   }) => {
     try {
-      const data = await tecnoShopApi.post("/users/register", {
+      await tecnoShopApi.post("/users/register", {
         first_name,
         last_name,
         email,
         age,
         password,
       });
-      console.log(data);
+
     } catch (error) {
       console.log(error);
       dispatch(onLogout(error.response.data.error || "--"));
@@ -105,12 +109,14 @@ export const useAuthStore = () => {
     // eslint-disable-next-line no-extra-boolean-cast
     if (!token) {
       dispatch(onLogout());
+      localStorage.clear()
       return;
     }
     try {
       const { data } = await tecnoShopApi.get("users/renew-token");
       if (data.ok === false) {
         startLogout();
+        localStorage.clear();
         dispatch(onLogout());
         return;
       }
@@ -123,9 +129,14 @@ export const useAuthStore = () => {
           id: userEntity.id,
         })
       );
+      const cart = JSON.parse(localStorage.getItem('cart'))
+      const tickets = JSON.parse(localStorage.getItem('ticket'))
+      dispatch(loadingCart(cart))
+      dispatch(loadInitialTicket(tickets))
     } catch (error) {
       console.log(error);
       startLogout();
+      localStorage.clear()
       dispatch(onLogout());
     }
   };
@@ -133,9 +144,11 @@ export const useAuthStore = () => {
   const startLogout = async () => {
     try {
       await tecnoShopApi.post("users/logout");
+      localStorage.clear()
       dispatch(onLogout());
     } catch (error) {
       console.log(error);
+      localStorage.clear()
       dispatch(onLogout());
     }
   };

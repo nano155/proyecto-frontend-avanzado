@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 export const productSlice = createSlice({
     name: 'product',
     initialState: {
@@ -52,6 +51,24 @@ export const productSlice = createSlice({
             state.errorProductMessage = undefined;
             state.successMessage = 'Update successfully';
         },
+        onUpdateStock:(state, {payload})=>{
+            state.products = state.products.map(product => {
+                if(product.id === payload.id){
+                    product.stock -= payload.quantity
+                    return product
+                }
+                return product
+            })
+        },
+        onUpdateStockForDelete:(state,{payload})=>{
+            state.products = state.products.map(product => {
+                if(product.id === payload.id){
+                    product.stock += payload.quantity
+                    return product
+                }
+                return product
+            })
+        },
         clearSelectedProduct: (state) => {
             state.selectedProduct={}
         },
@@ -61,6 +78,5 @@ export const productSlice = createSlice({
         }
     },
 });
-
 // Action creators are generated for each case reducer function
-export const { loadProducts, onLoading, onSendError, clearMessage, onCreateProduct, onDeleteProduct, onSelectProduct, onUpdateProduct, clearSelectedProduct } = productSlice.actions;
+export const { loadProducts, onLoading, onSendError, clearMessage, onCreateProduct, onDeleteProduct, onSelectProduct, onUpdateProduct, clearSelectedProduct, onUpdateStock, onUpdateStockForDelete } = productSlice.actions;

@@ -9,24 +9,26 @@ import { useProductStore } from "../hooks/useProductStore"
 
 
 export const AppRouter = () => {
-    const { status, checkToken, user, getUsers} = useAuthStore()
-    const {startLoadingProducts} = useProductStore()
+    const { status, checkToken, user, getUsers } = useAuthStore()
+    const { startLoadingProducts } = useProductStore()
 
-
-    useEffect(()=>{
-        if (status === 'authenticated' && user.role) {
-          if (user.role === 'admin') {
-            getUsers()
-          } 
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user, status])
 
     useEffect(() => {
+        if (status === 'authenticated' && user.role) {
+            if (user.role === 'admin') {
+                getUsers()
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user, status])
+
+    useEffect(() => {
+        if(status === 'authenticated' && user.role){
             startLoadingProducts()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
+
 
     useEffect(() => {
         checkToken();
